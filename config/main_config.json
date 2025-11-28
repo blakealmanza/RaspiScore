@@ -5,9 +5,9 @@
     },
     "leagues": {
         "displayed_leagues": [
-            "nfl",
-            "ncaam",
-            "ncaaw"
+            "nba",
+            "nhl",
+            "mlb"
         ],
         "ncaaf_conference": 0,
         "ncaam_conference": 0,

@@ -61,7 +61,7 @@ def display_event(event, matrix, config):
                 (x, y-1),  # up
                 (x, y+1),  # down
             ]
-            
+
             for nx, ny in neighbors:
                 if 0 <= nx < width and 0 <= ny < height:
                     r, g, b, a = pixels[nx, ny]
@@ -74,7 +74,7 @@ def display_event(event, matrix, config):
         for y in range(logo.height):
             for x in range(logo.width):
                 r, g, b, a = pixels[x, y]
- 
+
                 if (r, g, b) == (0, 0, 0) and a > 0:
                     # Only change if it has a transparent neighbor
                     if has_transparent_neighbor(x, y, logo.width, logo.height, pixels):
@@ -100,11 +100,11 @@ def display_event(event, matrix, config):
             time_detail = short_detail.split(" - ")[0]
             short_detail = short_detail.split(" - ")[1]
 
-            graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(time_detail)*font_width)/2)) -1,  36-1, outline_color, time_detail)
-            graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(time_detail)*font_width)/2)) +1,  36+1, outline_color, time_detail)
-            graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(time_detail)*font_width)/2)) -1,  36+1, outline_color, time_detail)
-            graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(time_detail)*font_width)/2)) +1,  36-1, outline_color, time_detail)
-            graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(time_detail)*font_width)/2)),  36, text_color, time_detail)
+            graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, time_detail, font_width) -1,  36-1, outline_color, time_detail)
+            graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, time_detail, font_width) +1,  36+1, outline_color, time_detail)
+            graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, time_detail, font_width) -1,  36+1, outline_color, time_detail)
+            graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, time_detail, font_width) +1,  36-1, outline_color, time_detail)
+            graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, time_detail, font_width),  36, text_color, time_detail)
         elif (short_detail.find("End of ")) != -1:
             short_detail = short_detail[:-2]
 
@@ -119,16 +119,22 @@ def display_event(event, matrix, config):
         graphics.DrawText(offscreen_canvas, font, matrix.options.cols - config["events"]["score_offset"] - (len(away_team_score)*font_width) - 1,  60+1, outline_color, away_team_score)
         graphics.DrawText(offscreen_canvas, font, matrix.options.cols - config["events"]["score_offset"] - (len(away_team_score)*font_width) + 1,  60-1, outline_color, away_team_score)
         graphics.DrawText(offscreen_canvas, font, matrix.options.cols - config["events"]["score_offset"] - (len(away_team_score)*font_width),  60, text_color, away_team_score)
-    
-    graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(short_detail)*font_width)/2)) - 1,  20-1, outline_color, short_detail)
-    graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(short_detail)*font_width)/2)) + 1,  20+1, outline_color, short_detail)
-    graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(short_detail)*font_width)/2)) - 1,  20+1, outline_color, short_detail)
-    graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(short_detail)*font_width)/2)) + 1,  20-1, outline_color, short_detail)
-    graphics.DrawText(offscreen_canvas, font, (int(matrix.options.cols/2) - ((len(short_detail)*font_width)/2)),  20, text_color, short_detail)
+
+    graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, short_detail, font_width) - 1,  20-1, outline_color, short_detail)
+    graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, short_detail, font_width) + 1,  20+1, outline_color, short_detail)
+    graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, short_detail, font_width) - 1,  20+1, outline_color, short_detail)
+    graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, short_detail, font_width) + 1,  20-1, outline_color, short_detail)
+    graphics.DrawText(offscreen_canvas, font, get_center_pos(matrix, short_detail, font_width),  20, text_color, short_detail)
 
     # Send the buffer to the matrix
     offscreen_canvas = matrix.SwapOnVSync(offscreen_canvas)
 
+def get_center_pos(matrix, text, font_width):
+    calculation = (int(matrix.options.cols/2) - ((len(text)*font_width)/2))
+    if calculation >= 0:
+        return calculation
+    else:
+        return 0
 
 def main(events_data, matrix, config):
     try:
@@ -139,7 +145,7 @@ def main(events_data, matrix, config):
         print("Display interrupted")
     finally:
         matrix.Clear()  # Clear matrix on exit
-        
+
 
 if __name__ == "__main__":
     main()

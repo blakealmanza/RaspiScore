@@ -14,7 +14,7 @@ def getData():
 
     print("\n" + "-"*40 + "\n")
 
-    
+
     for event in data["events"]:
         event_data = {}
         event_data.clear()
@@ -24,19 +24,17 @@ def getData():
         if short_detail.find("Final") != 0:
             print(getBroadcasts.main(event))
             event_data["broadcasts"] = getBroadcasts.main(event)
-        
+
         print(getOdds.main('basketball', 'wnba', event, short_detail))
         event_data["odds"] = getOdds.main('basketball', 'wnba', event, short_detail)
 
-        if short_detail.find(":") != -1 and short_detail.find("EST") != -1:
+        if short_detail.find(":") != -1 and (short_detail.find("EDT") != -1 or short_detail.find("EST") != -1):
             print(changeTime.main(short_detail))
             event_data["start time"] = changeTime.main(short_detail)
-        else:
-            print(f"{short_detail}")
 
-        
+
         for competition in event["competitions"]:
-            
+
             team_id = 0
             for team in competition["competitors"]:
                 team_id += 1
@@ -53,10 +51,10 @@ def getData():
 
                 event_data["team" + str(team_id) + " name"] = team_abbreviation
                 event_data["team" + str(team_id) + " score"] = team_score
-        
+
         events_data.append(event_data)
         print("\n" + "-"*40 + "\n")
-    
+
     return events_data
 
 

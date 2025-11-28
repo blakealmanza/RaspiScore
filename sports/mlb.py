@@ -13,7 +13,6 @@ def getData():
 
     print("\n" + "-"*40 + "\n")
 
-    
     for event in data["events"]:
         event_data = {}
         event_data.clear()
@@ -39,13 +38,12 @@ def getData():
         print(getOdds.main('baseball', 'mlb', event, short_detail))
         event_data["odds"] = getOdds.main('baseball', 'mlb', event, short_detail)
 
-        if short_detail.find(":") != -1 and short_detail.find("EDT") != -1:
+        if short_detail.find(":") != -1 and (short_detail.find("EDT") != -1 or short_detail.find("EST") != -1):
             print(changeTime.main(short_detail))
             event_data["start time"] = changeTime.main(short_detail)
 
         for competition in event["competitions"]:
-
-            if short_detail.find("Final") == -1:
+            if short_detail.find("Final") == -1 and short_detail.find(":") == -1:
                 firstBase = competition["situation"]["onFirst"]
                 event_data["first base"] = firstBase
                 secondBase = competition["situation"]["onSecond"]
@@ -87,7 +85,7 @@ def getData():
                     print(f"{team_short_name} - {team_score}")
                 else:
                     print(f"{team_short_name}")
-                
+
                 event_data["team" + str(team_id) + " name"] = team_short_name
                 event_data["team" + str(team_id) + " score"] = team_score
 

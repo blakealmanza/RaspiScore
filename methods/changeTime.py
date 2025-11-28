@@ -17,8 +17,9 @@ def main(short_detail, config=load_config()):
             _strings[1] = _strings[1].replace("PM", "AM")
 
     _strings[1] = _strings[1].replace("EST", "")
+    _strings[1] = _strings[1].replace("EDT", "")
     fixed_time = f"{strings[1]}:{_strings[1]}"
-    
+
     return fixed_time
 
 if __name__ == "__main__":
